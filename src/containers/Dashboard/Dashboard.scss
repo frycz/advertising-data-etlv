@@ -1,0 +1,11 @@
+.dashboard {
+    display: flex;
+
+    &__filters {
+        width: 300px;
+    }
+
+    &__chart {
+        flex: 1;
+    }
+}
