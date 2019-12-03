@@ -1,58 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import Select, { ValueType } from "react-select";
+import { getData, getLabels } from "../../services/dataService";
+import chartConfig from './chartConfig';
 
 import "./Dashboard.scss";
-
-const data = {
-  labels: ["January", "February", "March", "April", "May", "June", "July"],
-  datasets: [
-    {
-      label: "My First dataset",
-      fill: false,
-      lineTension: 0.1,
-      borderColor: "blue",
-      pointRadius: 1,
-      data: [65, 59, 80, 81, 56, 55, 40]
-    },
-    {
-      label: "My First dataset",
-      fill: false,
-      lineTension: 0.1,
-      borderColor: "rgba(75,192,192,1)",
-      pointRadius: 1,
-      data: [60, 50, 80, 70, 50, 50, 40]
-    }
-  ]
-};
 
 interface Option {
   value: string;
   label: string;
 }
 
-const options: Option[] = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" }
-];
-
 const Dashboard: React.FC = () => {
+  const {chartData, chartOptions} = chartConfig
+
+  const [allDatasource, setAllDatasource] = useState<Option[]>([]);
+  const [allCampain, setAllCampain] = useState<Option[]>([]);
+  const [filterDatasource, setFilterDatasource] = useState<ValueType<Option>>(
+    []
+  );
+  const [filterCampain, setFilterCampain] = useState<ValueType<Option>>([]);
   const [datasource, setDatasource] = useState<ValueType<Option>>([]);
   const [campain, setCampain] = useState<ValueType<Option>>([]);
+  // state for chart
+  const [data, setData] = useState<any[]>([]);
+  const [isDirty, setIsDirty] = useState(false);
+
+  useEffect(() => {
+    const labels = getLabels();
+    setAllDatasource(labels.datasource.map(v => ({ value: v, label: v })));
+    setAllCampain(labels.campain.map(v => ({ value: v, label: v })));
+  }, []);
+
+  useEffect(() => {
+    if (filterDatasource && filterCampain) {
+      setData(
+        getData(
+          (filterDatasource as Option[]).map(o => o.value),
+          (filterCampain as Option[]).map(o => o.value)
+        )
+      );
+    }
+  }, [filterDatasource, filterCampain]);
 
   const handleDataSourceChange = (selection: ValueType<Option>) => {
-    setDatasource(selection);
+    setIsDirty(true)
+    setDatasource(selection || []);
   };
 
   const handleCampainChange = (selection: ValueType<Option>) => {
-    setCampain(selection);
+    setIsDirty(true)
+    setCampain(selection || []);
   };
+
+  const handleApply = () => {
+    setIsDirty(false);
+    setFilterDatasource(datasource);
+    setFilterCampain(campain);
+  };
+
+  const clicksData = data.map((val: any) => val.clicks);
+  const impressionsData = data.map((val: any) => val.impressions);
+  const labels = data.map((val: any) => val.date);
+
+  chartData.labels = labels;
+  chartData.datasets[0].data = clicksData;
+  chartData.datasets[1].data = impressionsData;
 
   return (
     <div className="dashboard">
       <div className="dashboard__filters">
-        <div>Filter dimenstions values</div>
+        <h3>Filter dimenstions values</h3>
         <div>
           <div>Datasource</div>
           <div>
@@ -60,7 +78,7 @@ const Dashboard: React.FC = () => {
               isMulti={true}
               value={datasource}
               onChange={handleDataSourceChange}
-              options={options}
+              options={allDatasource}
             />
           </div>
         </div>
@@ -71,14 +89,17 @@ const Dashboard: React.FC = () => {
               isMulti={true}
               value={campain}
               onChange={handleCampainChange}
-              options={options}
+              options={allCampain}
             />
           </div>
+        </div>
+        <div className="dashboard__apply">
+          <button onClick={handleApply} disabled={!isDirty}>Apply</button>
         </div>
       </div>
       <div className="dashboard__chart">
         <div>
-          <Line data={data} />
+          <Line data={chartData} options={chartOptions} />
         </div>
       </div>
     </div>
