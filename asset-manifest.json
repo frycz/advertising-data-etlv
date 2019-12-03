@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/advertising-data-etlv/static/css/main.9c30a809.chunk.css",
+    "main.js": "/advertising-data-etlv/static/js/main.94c808b2.chunk.js",
+    "main.js.map": "/advertising-data-etlv/static/js/main.94c808b2.chunk.js.map",
+    "runtime-main.js": "/advertising-data-etlv/static/js/runtime-main.b8d4e33b.js",
+    "runtime-main.js.map": "/advertising-data-etlv/static/js/runtime-main.b8d4e33b.js.map",
+    "static/js/2.152cc82a.chunk.js": "/advertising-data-etlv/static/js/2.152cc82a.chunk.js",
+    "static/js/2.152cc82a.chunk.js.map": "/advertising-data-etlv/static/js/2.152cc82a.chunk.js.map",
+    "index.html": "/advertising-data-etlv/index.html",
+    "precache-manifest.b32bec60ee316b19cfd1b7580e9d32ab.js": "/advertising-data-etlv/precache-manifest.b32bec60ee316b19cfd1b7580e9d32ab.js",
+    "service-worker.js": "/advertising-data-etlv/service-worker.js",
+    "static/css/main.9c30a809.chunk.css.map": "/advertising-data-etlv/static/css/main.9c30a809.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b8d4e33b.js",
+    "static/js/2.152cc82a.chunk.js",
+    "static/css/main.9c30a809.chunk.css",
+    "static/js/main.94c808b2.chunk.js"
+  ]
+}
