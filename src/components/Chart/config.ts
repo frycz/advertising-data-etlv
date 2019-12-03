@@ -1,5 +1,5 @@
 export default {
-  chartData: {
+  sets: {
     labels: [] as string[],
     datasets: [
       {
@@ -22,7 +22,7 @@ export default {
       }
     ]
   },
-  chartOptions: {
+  options: {
     scales: {
       yAxes: [
         {
