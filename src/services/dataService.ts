@@ -1,13 +1,49 @@
 import _ from "lodash";
-import source from "./source.json";
+import raw from "./source.json";
 
-const data = source as any[];
+export interface Source {
+  Date: string;
+  Datasource: string;
+  Campaign: string;
+  Clicks: number;
+  Impressions: number;
+}
 
-export const getLabels = () => {
+export interface Labels {
+  datasource: string[];
+  campain: string[];
+}
+
+export interface Data {
+  clicks: number;
+  impressions: number;
+  date: string;
+}
+
+const source: Source[] = raw as Source[];
+
+const getDataFilter = (datasource: string[], campain: string[]) => (
+  row: Source
+): boolean =>
+  (!datasource.length || datasource.includes(row.Datasource)) &&
+  (!campain.length || campain.includes(row.Campaign));
+
+const sumDailyData = (sourceByDay: Source[], date: string) =>
+  _.reduce(
+    sourceByDay,
+    (result, day) => {
+      result.clicks += +day.Clicks;
+      result.impressions += +day.Impressions;
+      return result;
+    },
+    { clicks: 0, impressions: 0, date }
+  );
+
+export const getLabels = (): Labels => {
   const datasource = new Set<string>();
   const campain = new Set<string>();
 
-  data.forEach(row => {
+  source.forEach(row => {
     datasource.add(row.Datasource);
     campain.add(row.Campaign);
   });
@@ -15,25 +51,11 @@ export const getLabels = () => {
   return { datasource: Array.from(datasource), campain: Array.from(campain) };
 };
 
-export const getData = (datasource: any[], campain: any[]) => {
-  return _.chain(data)
-    .filter(
-      row =>
-        (!datasource.length || datasource.includes(row.Datasource)) &&
-        (!campain.length || campain.includes(row.Campaign))
-    )
+export const getData = (datasource: string[], campain: string[]): Data[] => {
+  return _.chain(source)
+    .filter(getDataFilter(datasource, campain))
     .groupBy("Date")
-    .map((value, key) =>
-      _.reduce(
-        value,
-        (acc, day) => {
-          acc.clicks += +day.Clicks;
-          acc.impressions += +day.Impressions;
-          return acc;
-        },
-        { clicks: 0, impressions: 0, date: key }
-      )
-    )
+    .map(sumDailyData)
     .value();
 };
 
