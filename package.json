@@ -2,6 +2,7 @@
   "name": "advertising-data-etlv",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://frycz.github.io/advertising-data-etlv",
   "dependencies": {
     "@types/jest": "24.0.23",
     "@types/lodash": "^4.14.149",
@@ -25,7 +26,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -41,5 +44,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^2.1.1"
   }
 }
