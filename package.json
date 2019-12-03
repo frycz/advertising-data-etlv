@@ -2,7 +2,7 @@
   "name": "advertising-data-etlv",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://frycz.github.io/advertising-data-etlv",
+  "homepage" : "http://frycz.github.io/advertising-data-etlv",
   "dependencies": {
     "@types/jest": "24.0.23",
     "@types/lodash": "^4.14.149",

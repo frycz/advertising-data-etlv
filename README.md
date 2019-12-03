@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Demo [https://frycz.github.io/advertising-data-etlv/](https://frycz.github.io/advertising-data-etlv/) - turn off adblocks first.
 
 ## Available Scripts
 
